@@ -1,5 +1,6 @@
-function my_kymodata_structure
+function my_kymodata_structure(color)
 % Initialize
+coloris = color;
 kymoname = {}; 
 kymofilename = {};
 file_names = {};
@@ -8,8 +9,11 @@ mat = dir('*.mat');
 for q = 1:length(mat)
     load(mat(q).name);
 end
-redkymo = dir(kymo_mat_red);
-greenkymo = dir(kymo_mat_green);
+if contains(coloris, 'red')
+    redkymo = dir(kymo_mat_red);
+elseif contains (coloris, 'green')
+    greenkymo = dir(kymo_mat_green);
+end
 linetime = dir(linetime_matstruct);
 pattern = [".", ".."];
 counter = 1;
@@ -19,7 +23,8 @@ for i = 1:length(linetime) % Get name of kymos
     match = [".mat"];
     name = erase(str,match);
 %     name = strip(name,'left','_');
-    name = name(1:(end-14));
+%     name = name(1:(end-14));
+    name = name(1:(end-11));
     kymoname{counter,1} = name;
     counter = counter +1;
     end

@@ -1,4 +1,4 @@
-function keep_these_struct = my_visualize_fits(start_var, end_var, pre_MSD)
+function keep_these = my_visualize_fits(start_var, end_var, pre_MSD)
 % end variable would be length(gaussfit)
 for i = start_var:end_var
     figure;
@@ -52,15 +52,15 @@ for i = start_var:end_var
     choice = menu('Choose an action','Good Fit','Bad Fit', 'Break');
 disp(['you are on trace ', num2str(start_var), ' out of ', num2str(end_var)]);
 if choice == 1
-    keep_these_struct(i).name = pre_MSD(i).name;
-    keep_these_struct(i).particle_tracked = horzcat(pre_MSD(i).timepix',pre_MSD(i).pixel',pre_MSD(i).intensity');
-    keep_these_struct(i).crop_coordinates = pre_MSD(i).crop_coordinates;
-    keep_these_struct(i).crop = pre_MSD(i).crop;
-    keep_these_struct(i).line_time = pre_MSD(i).line_time;
-    keep_these_struct(i).kymograph = pre_MSD(i).full_kymo;
+    keep_these{1,start_var} = pre_MSD(i).name;
+    keep_these{2,start_var} = horzcat(pre_MSD(i).time,pre_MSD(i).position,pre_MSD(i).intensity);
+    keep_these{3,start_var} = pre_MSD(i).crop_coordinates;
+    keep_these{4,start_var} = pre_MSD(i).crop;
+    keep_these{5,start_var} = pre_MSD(i).timestep;
+    keep_these{6,start_var} = pre_MSD(i).kymograph;
 elseif choice == 3
     break
-close all    
+    
 end
 end
 end
