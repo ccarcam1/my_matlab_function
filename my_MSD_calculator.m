@@ -37,7 +37,6 @@ for i = 1:length(mydata)
     MSDs(i).coords = mydata(i).coords;
     MSDs(i).molID = mydata(i).mol_id;
     MSDs(i).timestep = mydata(i).timestep;
+    
 end
-
-
 end

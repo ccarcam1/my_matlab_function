@@ -6,7 +6,7 @@ for i = 1%:length(MSD_data)
     x = MSD_data(i).MSD(1:cutoff,1);
     y =  MSD_data(i).MSD(1:cutoff,2);
     mdl = fitlm(x,y);
-%     epsilon_val = ;
-%     alpha_val = ;
+    alpha_val(i) = mdl.Coefficients.Estimate(2)*(MSD_data(i).timestep/1000);
+    epsilon_val(i) = mdl.Coefficients.Estimate(1);
 end
 end
