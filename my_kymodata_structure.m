@@ -1,5 +1,6 @@
 function my_kymodata_structure(color)
 % Initialize
+% color= 'green';
 coloris = color;
 kymoname = {}; 
 kymofilename = {};
@@ -24,7 +25,7 @@ for i = 1:length(linetime) % Get name of kymos
     name = erase(str,match);
 %     name = strip(name,'left','_');
 %     name = name(1:(end-14));
-    name = name(1:(end-11));
+%     name = name(1:(end-11));
     kymoname{counter,1} = name;
     counter = counter +1;
     end

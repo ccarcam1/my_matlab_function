@@ -1,12 +1,7 @@
-% function sampleSDev  = mysampleSDev(MSD_data)
-
-% for i = 1:length(MSD_data)
-%     for j = 1:length(MSD_data(i).MSD)
-%        a{j}=MSDss(i).r_all((MSDss(i).r_all(:,1) == j),:);
-%     end
-% end
-% sampleSDev = a;
-
+%% Claudia Carcamo 2020-04-21
+% Description: This function calculates the sample standard deviation for
+% the MSD data
+function MSDss = mysampleSDev(MSDss)
 for i = 1:length(MSDss)
     sampleSDev = [];
     for j = 1:length(MSDss(i).breakdown)
@@ -15,5 +10,5 @@ for i = 1:length(MSDss)
     MSDss(i).sampleSDev = sampleSDev;
     disp(i)
 end
-% end
+end
        

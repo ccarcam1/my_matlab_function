@@ -1,31 +1,54 @@
-function cutoff = myCutOffFinder(MSDs)
-for k = 1:length(MSDs)
+% function cutoff = myCutOffFinder(MSDs)
+function [rsquared,pvalue,yintercept,slopeval,fit_cutoffis] = myCutOffFinder(MSDs)
+tic
+l = size(MSDs,2);
+rsquared = cell(l, 1);
+pvalue = cell(l, 1);
+yintercept = cell(l, 1);
+slopeval = cell(l, 1);
+fit_cutoffis = zeros(1,l);
+parfor k = 1:l
     disp(k)
-    for i = 3:(length(MSDs(k).coords)-1)   
+    rsquared_holding = zeros(1,size((3:(size(MSDs(k).coords,1)-1)),2)); % potentially these need to be corrected to be 4 instead of 3
+    pvalue_holding = zeros(1,size((3:(size(MSDs(k).coords,1)-1)),2));
+    yintercept_holding = zeros(1,size((3:(size(MSDs(k).coords,1)-1)),2));
+    slopeval_holding = zeros(1,size((3:(size(MSDs(k).coords,1)-1)),2));
+    for i = 4:(size(MSDs(k).coords,1)-1)   
         x = MSDs(k).MSD(1:i, 1);
         y = MSDs(k).MSD(1:i, 2);
         mdl = fitlm(x,y);
-        rsquared(i) = mdl.Rsquared.Ordinary;
-        pvalue(i) = mdl.Coefficients.pValue(2);
+        rsquared_holding(i) = mdl.Rsquared.Ordinary;
+        pvalue_holding(i) = mdl.Coefficients.pValue(2);
+        yintercept_holding(i) = mdl.Coefficients.Estimate(1);
+        slopeval_holding(i) = mdl.Coefficients.Estimate(2);
     end
-    for i = 2:length(rsquared)-5
-        a = rsquared(i+1)-rsquared(i);
-        aa = rsquared(i)-rsquared(i-1);
-        if a<0 && pvalue(i)<0.01 && aa>0
-            b = rsquared(i+2)-rsquared(i+1);
-            c = rsquared(i+3)-rsquared(i+2);
-            d = rsquared(i+4)-rsquared(i+3);
-            e = rsquared(i+5)-rsquared(i+4);
+    rsquared{k} = rsquared_holding;
+    pvalue{k} = pvalue_holding;
+    yintercept{k} = yintercept_holding;
+    slopeval{k} = slopeval_holding;
+%     cutoff(k).rsquared = rsquared;
+%     cutoff(k).pvalue = pvalue;
+    for i = 5:length(rsquared{k})-5
+        a = rsquared{k}(i+1)-rsquared{k}(i);
+        aa = rsquared{k}(i)-rsquared{k}(i-1);
+        if a<0 && pvalue{k}(i)<0.01 && aa>0
+            b = rsquared{k}(i+2)-rsquared{k}(i+1);
+            c = rsquared{k}(i+3)-rsquared{k}(i+2);
+            d = rsquared{k}(i+4)-rsquared{k}(i+3);
+            e = rsquared{k}(i+5)-rsquared{k}(i+4);
             if b<0 && c<0 && d<0 && e<0
-                cutoff(k).fit_cutoff = i-1;
+                fit_cutoffis(k) = i-1;
+%                 cutoff(k).fit_cutoff = i-1;
                 break
             else
             end
         else
-        cutoff(k).fit_cutoff = NaN;
+        fit_cutoffis(k) = NaN;
+%         cutoff(k).fit_cutoff = NaN;
         end
     end
 end
+toc
 end
 
 
