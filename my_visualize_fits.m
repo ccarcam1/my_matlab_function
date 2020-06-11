@@ -69,7 +69,7 @@ for i = start_var:end_var
     xlabel('x, px');
     ylabel('y, px');
 
-    choice = menu('Choose an action','Good Fit','Bad Fit','truncate_top', 'Break');
+    choice = menu('Choose an action','Good Fit','Bad Fit','truncate_top','truncate_bottom','truncate_between(top-bottom)', 'Break');
     disp(['you are on trace ', num2str(start_var), ' out of ', num2str(end_var)]);
     if choice == 1
     keep_these(i).name = pre_MSD(i).name;
@@ -86,8 +86,8 @@ for i = start_var:end_var
     keep_these(i).line_time = [];
     keep_these(i).kymograph = [];
     elseif choice == 3
-    [x,y] = ginput(1)
-    y = round(y)
+    [x,y] = ginput(1);
+    y = round(y);
     keep_these(i).name = pre_MSD(i).name;
     keep_these(i).particle_tracked = horzcat(pre_MSD(i).timepix(1:end-y+1)',pre_MSD(i).pixel(y:end)',pre_MSD(i).intensity(y:end)');
     keep_these(i).crop_coordinates = pre_MSD(i).crop_coordinates + [y, 0, 0, 0];
@@ -95,6 +95,24 @@ for i = start_var:end_var
     keep_these(i).line_time = pre_MSD(i).line_time;
     keep_these(i).kymograph = pre_MSD(i).full_kymo;
     elseif choice == 4
+    [x,y] = ginput(1);
+    y = round(y);
+    keep_these(i).name = pre_MSD(i).name;
+    keep_these(i).particle_tracked = horzcat(pre_MSD(i).timepix(1:y)',pre_MSD(i).pixel(1:y)',pre_MSD(i).intensity(1:y)');
+    keep_these(i).crop_coordinates = pre_MSD(i).crop_coordinates - [0, y, 0, 0];
+    keep_these(i).crop = pre_MSD(i).crop(1:y,:);
+    keep_these(i).line_time = pre_MSD(i).line_time;
+    keep_these(i).kymograph = pre_MSD(i).full_kymo;
+       elseif choice == 5
+    [x,y] = ginput(2);
+    y = round(y);
+    keep_these(i).name = pre_MSD(i).name;
+    keep_these(i).particle_tracked = horzcat(pre_MSD(i).timepix(1:y(2)-y(1)+1)',pre_MSD(i).pixel(y(1):y(2))',pre_MSD(i).intensity(y(1):y(2))');
+    keep_these(i).crop_coordinates = pre_MSD(i).crop_coordinates + [y(1), -y(2), 0, 0];
+    keep_these(i).crop = pre_MSD(i).crop(y(1):y(2),:);
+    keep_these(i).line_time = pre_MSD(i).line_time;
+    keep_these(i).kymograph = pre_MSD(i).full_kymo;
+    elseif choice == 6
         break
     end
 end
