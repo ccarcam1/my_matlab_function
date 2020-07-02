@@ -68,9 +68,9 @@ for i = start_var:end_var
     title('trace');
     xlabel('x, px');
     ylabel('y, px');
-
-    choice = menu('Choose an action','Good Fit','Bad Fit','truncate_top','truncate_bottom','truncate_between(top-bottom)', 'Break');
-    disp(['you are on trace ', num2str(start_var), ' out of ', num2str(end_var)]);
+    dispthis = ['you are on trace ', num2str(i), ' out of ', num2str(end_var)];
+    choice = menu(dispthis,'Good Fit','Bad Fit','truncate_top','truncate_bottom','truncate_between(top-bottom)', 'Break');
+    disp(['you are on trace ', num2str(i), ' out of ', num2str(end_var)]);
     if choice == 1
     keep_these(i).name = pre_MSD(i).name;
     keep_these(i).particle_tracked = horzcat(pre_MSD(i).timepix',pre_MSD(i).pixel',pre_MSD(i).intensity');
@@ -78,6 +78,7 @@ for i = start_var:end_var
     keep_these(i).crop = pre_MSD(i).crop;
     keep_these(i).line_time = pre_MSD(i).line_time;
     keep_these(i).kymograph = pre_MSD(i).full_kymo;
+    keep_these(i).truncated = 0;
     elseif choice == 2
     keep_these(i).name = [];
     keep_these(i).particle_tracked = [];
@@ -94,6 +95,7 @@ for i = start_var:end_var
     keep_these(i).crop = pre_MSD(i).crop(y:end,:);
     keep_these(i).line_time = pre_MSD(i).line_time;
     keep_these(i).kymograph = pre_MSD(i).full_kymo;
+    keep_these(i).truncated = 1;
     elseif choice == 4
     [x,y] = ginput(1);
     y = round(y);
@@ -103,6 +105,7 @@ for i = start_var:end_var
     keep_these(i).crop = pre_MSD(i).crop(1:y,:);
     keep_these(i).line_time = pre_MSD(i).line_time;
     keep_these(i).kymograph = pre_MSD(i).full_kymo;
+    keep_these(i).truncated = 1;
        elseif choice == 5
     [x,y] = ginput(2);
     y = round(y);
@@ -112,6 +115,7 @@ for i = start_var:end_var
     keep_these(i).crop = pre_MSD(i).crop(y(1):y(2),:);
     keep_these(i).line_time = pre_MSD(i).line_time;
     keep_these(i).kymograph = pre_MSD(i).full_kymo;
+    keep_these(i).truncated = 1;
     elseif choice == 6
         break
     end
