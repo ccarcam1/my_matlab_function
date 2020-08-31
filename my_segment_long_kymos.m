@@ -1,5 +1,5 @@
 
-function structure_name = my_segment_kymos(start_var, end_var, which_color)
+function structure_name = my_segment_long_kymos(start_var, end_var, which_color)
 mat = dir('*.mat');
 for q = 1:length(mat)
     load(mat(q).name);
@@ -28,9 +28,7 @@ for i = 1:length(data3)
     ksize = size(kymograph);
     kw=ksize(:,2);
     kh=ksize(:,1);
-    prompt = 'How many traces to extract?';
-    num_of_traces = input(prompt);
-    for j = 1:num_of_traces
+    for j = 1:100
         filename = [data3(i).name, '_tracenum_', num2str(j)];
         structure_name(counter).name = filename;
         zoom on;
@@ -96,7 +94,7 @@ for i = 1:length(data3)
         structure_name(counter).d = d;
         crop_fig = figure;
         imagesc(crop,[0,max(crop, [], 'all')/2]);
-        set(crop_fig,'Position',[594.0000, 33.3333, 334.0000, 612.6667]);
+        set(crop_fig,'Position',[594.0000, 33.3333, 334.0000, 612.6667]); 
         p = ginput(2); 
         sp(11) = min(floor(p(1)), floor(p(2))); %xmin
         sp(12) = min(floor(p(3)), floor(p(4))); %ymin
@@ -144,7 +142,7 @@ for i = 1:length(data3)
         end
         close all
         kymofig = figure;
-        if j ~= num_of_traces
+        if j < 100
             imagesc(my_threshold_function(kymograph,30));
             set(kymofig,'Position',[2.0000, 26.6667,589.6667,619.6667]); %laptop
             ksize = size(kymograph);
@@ -152,16 +150,8 @@ for i = 1:length(data3)
             kh=ksize(:,1);
         else
         end
-disp(['this', num2str(j), 'out of', num2str(num_of_traces)])
-    prompt = 'Should we break?';
-    breakinner = input(prompt);
-    if isempty(breakinner)
-    else
-        break
-    end
-%         zoom on;
-%         pause() % you can zoom with your mouse and when your image is okay, you press any key
-%         zoom off; % to escape the zoom mode
+     prompt = 'Extract another y = 1 n = 101?';
+     lmnop = input(prompt);
     end
 disp(['you are on trace ', num2str(i), ' out of ', num2str(length(data3))])
 end

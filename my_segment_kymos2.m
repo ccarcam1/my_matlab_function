@@ -1,5 +1,5 @@
 
-function structure_name = my_segment_kymos(start_var, end_var, which_color)
+function structure_name = my_segment_kymos_improvedwithzoom(start_var, end_var, which_color)
 mat = dir('*.mat');
 for q = 1:length(mat)
     load(mat(q).name);
@@ -21,18 +21,26 @@ for i = 1:length([start_var:end_var])
 end
 counter = 1;
 for i = 1:length(data3)
-    kymograph = rot90(data3(i).color, 3);
-    kymofig = figure;
-    imagesc(my_threshold_function(kymograph,30));
-    set(kymofig,'Position',[2.0000, 26.6667,589.6667,619.6667]); %laptop 
-    ksize = size(kymograph);
-    kw=ksize(:,2);
-    kh=ksize(:,1);
-    prompt = 'How many traces to extract?';
-    num_of_traces = input(prompt);
-    for j = 1:num_of_traces
+%     prompt = 'How many traces to extract?';
+%     num_of_traces = input(prompt);
+        counterthis = counter;
+    for j = 1:100
+        kymograph = rot90(data3(i).color, 3);
+        kymofig = figure;
+        imagesc(my_threshold_function(kymograph,30));
+        set(kymofig,'Position',[2.0000, 26.6667,589.6667,619.6667]); %laptop 
+        ksize = size(kymograph);
+        kw=ksize(:,2);
+        kh=ksize(:,1);
         filename = [data3(i).name, '_tracenum_', num2str(j)];
         structure_name(counter).name = filename;
+        if j ~= 1
+            for asdf = counterthis:counter-1
+                rectangle('Position',[structure_name(asdf).crop_coordinates(3),structure_name(asdf).crop_coordinates(1),...
+                structure_name(asdf).crop_coordinates(4)-structure_name(asdf).crop_coordinates(3),structure_name(asdf).crop_coordinates(2)-...
+                structure_name(asdf).crop_coordinates(1)], 'EdgeColor','y'); 
+            end
+        end
         zoom on;
         pause() % you can zoom with your mouse and when your image is okay, you press any key
         zoom off; % to escape the zoom mode
@@ -143,17 +151,16 @@ for i = 1:length(data3)
             save('green_segmentation.mat', 'structure_name');
         end
         close all
-        kymofig = figure;
-        if j ~= num_of_traces
-            imagesc(my_threshold_function(kymograph,30));
-            set(kymofig,'Position',[2.0000, 26.6667,589.6667,619.6667]); %laptop
-            ksize = size(kymograph);
-            kw=ksize(:,2);
-            kh=ksize(:,1);
-        else
-        end
-disp(['this', num2str(j), 'out of', num2str(num_of_traces)])
-    prompt = 'Should we break?';
+%         kymofig = figure;
+%         if j ~= num_of_traces
+%             imagesc(my_threshold_function(kymograph,30));
+%             set(kymofig,'Position',[2.0000, 26.6667,589.6667,619.6667]); %laptop
+%             ksize = size(kymograph);
+%             kw=ksize(:,2);
+%             kh=ksize(:,1);
+%         else
+%         end
+    prompt = 'Should we break? To break enter number 1.';
     breakinner = input(prompt);
     if isempty(breakinner)
     else

@@ -31,7 +31,7 @@ for i = start_var:end_var
     xlabel('time, s');
     xlim([0 max(time)]);
     ylabel('intensity, a.u.');
-    ylim([0 15]);
+%     ylim([0 15]);
     
     figure(2);
     set(gcf,'Position',[482.0000,   31.0000,  472.6667,  615.6667]);
