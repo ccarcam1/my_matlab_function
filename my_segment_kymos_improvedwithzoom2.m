@@ -1,5 +1,5 @@
 
-function structure_name = my_segment_kymos_improvedwithzoom(start_var, end_var, which_color)
+function structure_name = my_segment_kymos_improvedwithzoom2(start_var, end_var, which_color)
 mat = dir('*.mat');
 for q = 1:length(mat)
     load(mat(q).name);
@@ -21,10 +21,22 @@ for i = 1:length([start_var:end_var])
 end
 counter = 1;
 for i = 1:length(data3)
-%     prompt = 'How many traces to extract?';
-%     num_of_traces = input(prompt);
         counterthis = counter;
-    for j = 1:100
+%         enumerate_this = 1;
+        j = 1;
+        kymograph = rot90(data3(i).color, 3);
+        kymofig = figure;
+        imagesc(my_threshold_function(kymograph,30));
+        set(kymofig,'Position',[2.0000, 26.6667,589.6667,619.6667])
+        ksize = size(kymograph);
+        kw=ksize(:,2);
+        kh=ksize(:,1);
+        filename = [data3(i).name, '_tracenum_', num2str(j)];
+        title(filename);
+        prompt = 'Should skip this kymo. Type d to skip. else press enter key with blank:  ';
+        skipthisone = input(prompt);
+        close all
+    while isempty(skipthisone)
         kymograph = rot90(data3(i).color, 3);
         kymofig = figure;
         imagesc(my_threshold_function(kymograph,30));
@@ -42,12 +54,12 @@ for i = 1:length(data3)
                 structure_name(asdf).crop_coordinates(1)], 'EdgeColor','y'); 
             end
         end
-        prompt = 'Should skip this kymo. Type d to skip. else press enter key with blank:  ';
-        skipthisone = input(prompt);
-        if isempty(skipthisone)
-        else
-            break
-        end
+%         prompt = 'Should skip this kymo. Type d to skip. else press enter key with blank:  ';
+%         skipthisone = input(prompt);
+%         if isempty(skipthisone)
+%         else
+%             break
+%         end
         zoom on;
         pause() % you can zoom with your mouse and when your image is okay, you press any key
         zoom off; % to escape the zoom mode
@@ -176,6 +188,7 @@ for i = 1:length(data3)
 %         zoom on;
 %         pause() % you can zoom with your mouse and when your image is okay, you press any key
 %         zoom off; % to escape the zoom mode
+    j = j+1;
     end
 disp(['you are on trace ', num2str(i), ' out of ', num2str(length(data3))])
 end
